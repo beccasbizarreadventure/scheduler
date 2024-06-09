@@ -30,9 +30,12 @@ export default function Appointment(props) {
   );
 
   const save = (name, interviewer) => {
+    // Check if interviewer is an object (new appointment), then extract the id; else, use it directly.
+    const interviewerId = typeof interviewer === 'object' ? interviewer.id : interviewer;
+
     const interview = {
       student: name,
-      interviewer
+      interviewer: interviewerId
     };
 
     transition(SAVING);
@@ -50,6 +53,10 @@ export default function Appointment(props) {
       .then(() => transition(EMPTY))
       .catch(error => transition(ERROR_DELETE, true));
   };
+
+  if (mode === SAVING) {
+    console.log("SAVING");
+  }
 
   return (
     <article className="appointment" data-testid="appointment">
