@@ -53,18 +53,18 @@ export default function Appointment(props) {
       .then(() => transition(EMPTY))
       .catch(error => transition(ERROR_DELETE, true));
   };
-  
+
   return (
     <article className="appointment" data-testid="appointment">
 
       <Header time={props.time} />
 
-      {mode === SHOW &&
+      {mode === SHOW && props.interview &&
         <Show
           student={props.interview.student}
           interviewer={props.interview.interviewer}
-          onDelete={transition(CONFIRM)}
-          onEdit={transition(EDIT)}
+          onDelete={() => transition(CONFIRM)}
+          onEdit={() => transition(EDIT)}
         />}
 
       {mode === EMPTY &&

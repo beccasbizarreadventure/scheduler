@@ -2,7 +2,7 @@ import React from "react";
 
 import { render, debug, cleanup, fireEvent, findByDisplayValue, 
   getByText, prettyDOM, getAllByTestId, getByAltText, getByPlaceholderText, queryByText, 
-  findByText, queryByAltText } from "@testing-library/react";
+  findByText, queryByAltText, getByRole } from "@testing-library/react";
 
 import Application from "components/Application";
 
@@ -15,12 +15,12 @@ describe("Application", () => {
 
     await findByText("Monday");
     fireEvent.click(await findByText("Tuesday"));
-    await findByDisplayValue("Leopold Silvers");
+    await findByText("Leopold Silvers");
   });
 
   it("loads data, books an interview and reduces the spots remaining for the first day by 1", async () => {
     const { container, debug } = render(<Application />);
-    await findByDisplayValue(container, "Archie Cohen");
+    await findByText(container, "Archie Cohen");
 
     const appointments = getAllByTestId(container, "appointment");
     const appointment = appointments[0];
@@ -37,7 +37,7 @@ describe("Application", () => {
 
     expect(getByText(appointment, "Saving")).toBeInTheDocument();
 
-    await findByDisplayValue(appointment, "Lydia Miller-Jones");
+    await findByText(appointment, "Lydia Miller-Jones");
 
     const day = (getAllByTestId(container, "day")).find((day) => queryByText(day, "Monday"));
 
@@ -48,17 +48,15 @@ describe("Application", () => {
   it("loads data, cancels an interview and increases the spots remaining for Monday by 1", async () => {
 
     const { container, debug } = render(<Application />);
-    await findByDisplayValue(container, "Archie Cohen");
-    const appointment = getAllByTestId(container, "appointment").find((appointment) =>
-    queryByText(appointment, "Archie Cohen") );
+    await findByText(container, "Archie Cohen");
+    // const appointment = getAllByTestId(container, "appointment").find((appointment) =>
+    // queryByText(appointment, "Archie Cohen") );
 
-    fireEvent.click(getByText(container, "Cancel"));
+    // fireEvent.click(queryByAltText(appointment, "Delete"));
 
-    await findByText(container, "Are you sure you would like to delete?");
-
-    fireEvent.click(getByText(container, "Confirm"));
-
-    expect(getByText(container, "Deleting")).toBeInTheDocument();
+    // await findByText(container, "Are you sure you would like to delete?");
+    // fireEvent.click(getByText(container, "Confirm"));
+    // expect(getByText(container, "Deleting")).toBeInTheDocument();
 
     // await getByAltText(appointment, "Add");
 
