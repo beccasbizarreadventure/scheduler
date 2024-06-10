@@ -53,11 +53,7 @@ export default function Appointment(props) {
       .then(() => transition(EMPTY))
       .catch(error => transition(ERROR_DELETE, true));
   };
-
-  if (mode === SAVING) {
-    console.log("SAVING");
-  }
-
+  
   return (
     <article className="appointment" data-testid="appointment">
 

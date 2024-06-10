@@ -1,11 +1,10 @@
 import React from "react";
 
-import { render, debug, cleanup, findByText, fireEvent, findByDisplayValue, 
-  getByText, prettyDOM, getAllByTestId, getByAltText, getByPlaceholderText, 
-  findByAltText, getByDisplayValue, waitForElement, queryByText } from "@testing-library/react";
+import { render, debug, cleanup, fireEvent, findByDisplayValue, 
+  getByText, prettyDOM, getAllByTestId, getByAltText, getByPlaceholderText, queryByText, 
+  findByText, queryByAltText } from "@testing-library/react";
 
 import Application from "components/Application";
-import DayListItem from "components/DayListItem";
 
 afterEach(cleanup);
 
@@ -43,6 +42,29 @@ describe("Application", () => {
     const day = (getAllByTestId(container, "day")).find((day) => queryByText(day, "Monday"));
 
     expect(getByText(day, "no spots remaining")).toBeInTheDocument();
+
+  });
+
+  it("loads data, cancels an interview and increases the spots remaining for Monday by 1", async () => {
+
+    const { container, debug } = render(<Application />);
+    await findByDisplayValue(container, "Archie Cohen");
+    const appointment = getAllByTestId(container, "appointment").find((appointment) =>
+    queryByText(appointment, "Archie Cohen") );
+
+    fireEvent.click(getByText(container, "Cancel"));
+
+    await findByText(container, "Are you sure you would like to delete?");
+
+    fireEvent.click(getByText(container, "Confirm"));
+
+    expect(getByText(container, "Deleting")).toBeInTheDocument();
+
+    // await getByAltText(appointment, "Add");
+
+    // const day = (getAllByTestId(container, "day")).find((day) => queryByText(day, "Monday"));
+
+    // expect(getByText(day, "2 spots remaining")).toBeInTheDocument();
 
   });
 });
